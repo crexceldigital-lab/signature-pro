@@ -14,12 +14,17 @@ import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppTemplatesRouteImport } from './routes/app.templates'
+import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppOrganizationRouteImport } from './routes/app.organization'
+import { Route as AppNotificationsRouteImport } from './routes/app.notifications'
+import { Route as AppInstallationRouteImport } from './routes/app.installation'
 import { Route as AppEmployeesRouteImport } from './routes/app.employees'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
 import { Route as AppCampaignsRouteImport } from './routes/app.campaigns'
 import { Route as AppBuilderRouteImport } from './routes/app.builder'
 import { Route as AppBannersRouteImport } from './routes/app.banners'
+import { Route as AppAnalyticsRouteImport } from './routes/app.analytics'
+import { Route as AppAdminRouteImport } from './routes/app.admin'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -46,9 +51,24 @@ const AppTemplatesRoute = AppTemplatesRouteImport.update({
   path: '/templates',
   getParentRoute: () => AppRoute,
 } as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppOrganizationRoute = AppOrganizationRouteImport.update({
   id: '/organization',
   path: '/organization',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppNotificationsRoute = AppNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppInstallationRoute = AppInstallationRouteImport.update({
+  id: '/installation',
+  path: '/installation',
   getParentRoute: () => AppRoute,
 } as any)
 const AppEmployeesRoute = AppEmployeesRouteImport.update({
@@ -76,29 +96,49 @@ const AppBannersRoute = AppBannersRouteImport.update({
   path: '/banners',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/analytics': typeof AppAnalyticsRoute
   '/app/banners': typeof AppBannersRoute
   '/app/builder': typeof AppBuilderRoute
   '/app/campaigns': typeof AppCampaignsRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/employees': typeof AppEmployeesRoute
+  '/app/installation': typeof AppInstallationRoute
+  '/app/notifications': typeof AppNotificationsRoute
   '/app/organization': typeof AppOrganizationRoute
+  '/app/settings': typeof AppSettingsRoute
   '/app/templates': typeof AppTemplatesRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/analytics': typeof AppAnalyticsRoute
   '/app/banners': typeof AppBannersRoute
   '/app/builder': typeof AppBuilderRoute
   '/app/campaigns': typeof AppCampaignsRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/employees': typeof AppEmployeesRoute
+  '/app/installation': typeof AppInstallationRoute
+  '/app/notifications': typeof AppNotificationsRoute
   '/app/organization': typeof AppOrganizationRoute
+  '/app/settings': typeof AppSettingsRoute
   '/app/templates': typeof AppTemplatesRoute
   '/app': typeof AppIndexRoute
 }
@@ -107,12 +147,17 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/app/admin': typeof AppAdminRoute
+  '/app/analytics': typeof AppAnalyticsRoute
   '/app/banners': typeof AppBannersRoute
   '/app/builder': typeof AppBuilderRoute
   '/app/campaigns': typeof AppCampaignsRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/employees': typeof AppEmployeesRoute
+  '/app/installation': typeof AppInstallationRoute
+  '/app/notifications': typeof AppNotificationsRoute
   '/app/organization': typeof AppOrganizationRoute
+  '/app/settings': typeof AppSettingsRoute
   '/app/templates': typeof AppTemplatesRoute
   '/app/': typeof AppIndexRoute
 }
@@ -122,24 +167,34 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/auth'
+    | '/app/admin'
+    | '/app/analytics'
     | '/app/banners'
     | '/app/builder'
     | '/app/campaigns'
     | '/app/dashboard'
     | '/app/employees'
+    | '/app/installation'
+    | '/app/notifications'
     | '/app/organization'
+    | '/app/settings'
     | '/app/templates'
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
+    | '/app/admin'
+    | '/app/analytics'
     | '/app/banners'
     | '/app/builder'
     | '/app/campaigns'
     | '/app/dashboard'
     | '/app/employees'
+    | '/app/installation'
+    | '/app/notifications'
     | '/app/organization'
+    | '/app/settings'
     | '/app/templates'
     | '/app'
   id:
@@ -147,12 +202,17 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/auth'
+    | '/app/admin'
+    | '/app/analytics'
     | '/app/banners'
     | '/app/builder'
     | '/app/campaigns'
     | '/app/dashboard'
     | '/app/employees'
+    | '/app/installation'
+    | '/app/notifications'
     | '/app/organization'
+    | '/app/settings'
     | '/app/templates'
     | '/app/'
   fileRoutesById: FileRoutesById
@@ -200,11 +260,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTemplatesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/settings': {
+      id: '/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/organization': {
       id: '/app/organization'
       path: '/organization'
       fullPath: '/app/organization'
       preLoaderRoute: typeof AppOrganizationRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/notifications': {
+      id: '/app/notifications'
+      path: '/notifications'
+      fullPath: '/app/notifications'
+      preLoaderRoute: typeof AppNotificationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/installation': {
+      id: '/app/installation'
+      path: '/installation'
+      fullPath: '/app/installation'
+      preLoaderRoute: typeof AppInstallationRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/employees': {
@@ -242,27 +323,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppBannersRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/analytics': {
+      id: '/app/analytics'
+      path: '/analytics'
+      fullPath: '/app/analytics'
+      preLoaderRoute: typeof AppAnalyticsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/admin': {
+      id: '/app/admin'
+      path: '/admin'
+      fullPath: '/app/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppAdminRoute: typeof AppAdminRoute
+  AppAnalyticsRoute: typeof AppAnalyticsRoute
   AppBannersRoute: typeof AppBannersRoute
   AppBuilderRoute: typeof AppBuilderRoute
   AppCampaignsRoute: typeof AppCampaignsRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppEmployeesRoute: typeof AppEmployeesRoute
+  AppInstallationRoute: typeof AppInstallationRoute
+  AppNotificationsRoute: typeof AppNotificationsRoute
   AppOrganizationRoute: typeof AppOrganizationRoute
+  AppSettingsRoute: typeof AppSettingsRoute
   AppTemplatesRoute: typeof AppTemplatesRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAdminRoute: AppAdminRoute,
+  AppAnalyticsRoute: AppAnalyticsRoute,
   AppBannersRoute: AppBannersRoute,
   AppBuilderRoute: AppBuilderRoute,
   AppCampaignsRoute: AppCampaignsRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppEmployeesRoute: AppEmployeesRoute,
+  AppInstallationRoute: AppInstallationRoute,
+  AppNotificationsRoute: AppNotificationsRoute,
   AppOrganizationRoute: AppOrganizationRoute,
+  AppSettingsRoute: AppSettingsRoute,
   AppTemplatesRoute: AppTemplatesRoute,
   AppIndexRoute: AppIndexRoute,
 }
