@@ -174,3 +174,50 @@
 @utility text-balance {
   text-wrap: balance;
 }
+
+/* ---------------------------------------------------------------- */
+/* Motion system — one orchestrated entrance, quiet micro-lifts.     */
+/* All motion collapses under prefers-reduced-motion.                */
+/* ---------------------------------------------------------------- */
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@utility anim-fade-up {
+  animation: fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--stagger, 0) * 55ms);
+}
+
+@utility hover-lift {
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 4px oklch(0.15 0.01 260 / 0.05), 0 16px 36px -12px oklch(0.15 0.01 260 / 0.16);
+}
+
+/* Sheen sweep across template thumbnails on hover */
+@utility thumb-sheen {
+  position: relative;
+  overflow: hidden;
+}
+.thumb-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, oklch(1 0 0 / 0.35) 50%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.group:hover .thumb-sheen::after {
+  transform: translateX(120%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-fade-up { animation: none; }
+  .hover-lift, .hover-lift:hover { transform: none; transition: none; }
+  .thumb-sheen::after { display: none; }
+}

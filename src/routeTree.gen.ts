@@ -14,6 +14,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as OauthCallbackRouteImport } from './routes/oauth.callback'
 import { Route as AppTemplatesRouteImport } from './routes/app.templates'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppOrganizationRouteImport } from './routes/app.organization'
@@ -53,6 +54,11 @@ const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AppRoute,
+} as any)
+const OauthCallbackRoute = OauthCallbackRouteImport.update({
+  id: '/oauth/callback',
+  path: '/oauth/callback',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AppTemplatesRoute = AppTemplatesRouteImport.update({
   id: '/templates',
@@ -144,6 +150,7 @@ export interface FileRoutesByFullPath {
   '/app/organization': typeof AppOrganizationRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/templates': typeof AppTemplatesRoute
+  '/oauth/callback': typeof OauthCallbackRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
@@ -164,6 +171,7 @@ export interface FileRoutesByTo {
   '/app/organization': typeof AppOrganizationRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/templates': typeof AppTemplatesRoute
+  '/oauth/callback': typeof OauthCallbackRoute
   '/app': typeof AppIndexRoute
 }
 export interface FileRoutesById {
@@ -186,6 +194,7 @@ export interface FileRoutesById {
   '/app/organization': typeof AppOrganizationRoute
   '/app/settings': typeof AppSettingsRoute
   '/app/templates': typeof AppTemplatesRoute
+  '/oauth/callback': typeof OauthCallbackRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
@@ -209,6 +218,7 @@ export interface FileRouteTypes {
     | '/app/organization'
     | '/app/settings'
     | '/app/templates'
+    | '/oauth/callback'
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -229,6 +239,7 @@ export interface FileRouteTypes {
     | '/app/organization'
     | '/app/settings'
     | '/app/templates'
+    | '/oauth/callback'
     | '/app'
   id:
     | '__root__'
@@ -250,6 +261,7 @@ export interface FileRouteTypes {
     | '/app/organization'
     | '/app/settings'
     | '/app/templates'
+    | '/oauth/callback'
     | '/app/'
   fileRoutesById: FileRoutesById
 }
@@ -258,6 +270,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  OauthCallbackRoute: typeof OauthCallbackRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -296,6 +309,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/oauth/callback': {
+      id: '/oauth/callback'
+      path: '/oauth/callback'
+      fullPath: '/oauth/callback'
+      preLoaderRoute: typeof OauthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/app/templates': {
       id: '/app/templates'
@@ -441,6 +461,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  OauthCallbackRoute: OauthCallbackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

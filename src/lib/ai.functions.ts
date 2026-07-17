@@ -15,6 +15,7 @@ const TEMPLATE_IDS = [
   "accent-bar", "header-band", "corner-frame", "split-vertical", "stacked-center",
   "minimal-line", "sales-cta", "photo-card", "banner-hero", "right-rail",
   "underline-executive", "duotone", "legal-standard", "gradient-edge",
+  "mono-chip", "grid-mark", "pulse-motion",
 ] as const;
 
 const DesignInput = z.object({
@@ -51,7 +52,7 @@ export type AiVariant = z.infer<typeof Variant>;
 
 const SYSTEM = `You are SignatureFlow's art director. Given a design brief, choose signature designs from this template catalog:
 
-accent-bar (corporate, vertical brand bar) · header-band (bold reversed color band) · corner-frame (luxury editorial frame, serif) · split-vertical (classic logo + divider) · stacked-center (centered minimal) · minimal-line (two plain lines) · sales-cta (CTA-forward with underline) · photo-card (creative tinted card, ringed portrait) · banner-hero (compact identity + campaign banner) · right-rail (tech, tinted side rail) · underline-executive (heavy accent rule under name) · duotone (solid color identity block) · legal-standard (restrained serif + disclaimer) · gradient-edge (angled brand edge, premium)
+accent-bar (corporate, vertical brand bar) · header-band (bold reversed color band) · corner-frame (luxury editorial frame, serif) · split-vertical (classic logo + divider) · stacked-center (centered minimal) · minimal-line (two plain lines) · sales-cta (CTA-forward with underline) · photo-card (creative tinted card, ringed portrait) · banner-hero (compact identity + campaign banner) · right-rail (tech, tinted side rail) · underline-executive (heavy accent rule under name) · duotone (solid color identity block) · legal-standard (restrained serif + disclaimer) · gradient-edge (angled brand edge, premium) · mono-chip (contacts as rounded chips, modern) · grid-mark (Swiss editorial grid, oversized initial) · pulse-motion (animated accent bar, energetic)
 
 Return STRICT JSON only, no markdown, matching:
 {"variants":[{"templateId":"...","accent":"#RRGGBB","fontSize":13,"font":"Arial, Helvetica, sans-serif","photoShape":"round","showPhoto":true,"showLogo":true,"showSocials":true,"showCTA":false,"showLegal":false,"ctaText":"optional","rationale":"one sentence on why this fits the brief"}]}

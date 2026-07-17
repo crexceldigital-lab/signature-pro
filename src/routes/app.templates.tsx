@@ -24,7 +24,7 @@ const categories = ["All", ...Array.from(new Set(TEMPLATES.map((t) => t.category
 function TemplateThumb({ t }: { t: TemplateDef }) {
   const html = useMemo(() => t.render(SAMPLE_DATA, sampleStyleFor(t)), [t]);
   return (
-    <div className="pointer-events-none relative h-44 overflow-hidden border-b bg-white">
+    <div className="thumb-sheen pointer-events-none relative h-44 overflow-hidden border-b bg-white">
       <div
         className="absolute left-4 top-4 origin-top-left"
         style={{ transform: "scale(0.62)", width: "160%" }}
@@ -76,8 +76,8 @@ function Templates() {
       </div>
 
       <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {list.map((t) => (
-          <Card key={t.id} className="group overflow-hidden shadow-elegant transition hover:-translate-y-0.5">
+        {list.map((t, i) => (
+          <Card key={t.id} style={{ "--stagger": i } as React.CSSProperties} className="anim-fade-up hover-lift group overflow-hidden shadow-elegant">
             <div className="relative">
               <TemplateThumb t={t} />
               <button

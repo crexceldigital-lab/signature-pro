@@ -471,6 +471,95 @@ ${bannerRow(d, s)}
 ${legalRow(d, s)}`, s);
     },
   },
+  {
+    id: "mono-chip",
+    name: "Chip Modern",
+    category: "Modern",
+    description: "Contacts as rounded chips — the freshest look in signatures right now.",
+    defaultAccent: "#18181B",
+    premium: true,
+    render(d, s) {
+      const a = esc(s.accent);
+      const chip = (content: string, filled = false) =>
+        `<td style="padding:0 6px 6px 0;"><table cellpadding="0" cellspacing="0" border="0" role="presentation"><tr><td bgcolor="${filled ? a : "#f4f4f5"}" style="background:${filled ? a : "#f4f4f5"};border-radius:999px;padding:5px 12px;font-size:${s.fontSize - 2}px;font-weight:600;color:${filled ? "#ffffff" : TEXT};white-space:nowrap;">${content}</td></tr></table></td>`;
+      const chips = [
+        d.email && chip(`<a href="mailto:${esc(d.email)}" style="color:#ffffff;text-decoration:none;">${esc(d.email)}</a>`, true),
+        d.phone && chip(`<a href="tel:${esc(d.phone)}" style="color:${TEXT};text-decoration:none;">${esc(d.phone)}</a>`),
+        d.website && chip(`<a href="https://${esc(d.website.replace(/^https?:\/\//, ""))}" style="color:${TEXT};text-decoration:none;">${esc(d.website)}</a>`),
+        d.address && chip(esc(d.address)),
+      ].filter(Boolean).join("");
+      return wrap(`
+<tr>
+  ${photoImg(d, s, 76) ? `<td valign="middle" style="padding-right:14px;">${photoImg(d, s, 76)}</td>` : ""}
+  <td valign="middle">
+    <div style="font-size:${s.fontSize + 6}px;font-weight:800;color:${TEXT};letter-spacing:-.3px;line-height:1.15;">${fullName(d)}</div>
+    <div style="font-size:${s.fontSize}px;color:${MUTED};padding:2px 0 10px 0;">${esc(d.jobTitle)} · <span style="color:${TEXT};font-weight:700;">${esc(d.company)}</span></div>
+    <table cellpadding="0" cellspacing="0" border="0" role="presentation"><tr>${chips}</tr></table>
+    ${socialPills(d, s, TEXT)}
+  </td>
+  ${logoImg(d, s) ? `<td valign="top" align="right" style="padding-left:18px;">${logoImg(d, s, 72)}</td>` : ""}
+</tr>
+${bannerRow(d, s, 3)}
+${legalRow(d, s, 3)}`, s);
+    },
+  },
+  {
+    id: "grid-mark",
+    name: "Editorial Grid",
+    category: "Editorial",
+    description: "Oversized initial on a Swiss grid — sharp, magazine-grade identity.",
+    defaultAccent: "#DC2626",
+    premium: true,
+    render(d, s) {
+      const a = esc(s.accent);
+      const initial = esc((d.firstName || "?").charAt(0).toUpperCase());
+      return wrap(`
+<tr>
+  <td width="86" valign="top" align="center" bgcolor="${a}14" style="width:86px;background:${a}14;border-top:4px solid ${a};padding:10px 0 14px 0;">
+    <div style="font-family:Georgia,'Times New Roman',serif;font-size:${s.fontSize + 34}px;font-weight:700;color:${a};line-height:1;">${initial}</div>
+  </td>
+  <td width="22" style="width:22px;font-size:0;">&nbsp;</td>
+  <td valign="top" style="border-top:1px solid #e5e7eb;padding-top:12px;">
+    <div style="font-size:${s.fontSize - 3}px;letter-spacing:2.5px;text-transform:uppercase;color:${MUTED};font-weight:700;">${esc(d.jobTitle)}</div>
+    <div style="font-size:${s.fontSize + 5}px;font-weight:800;color:${TEXT};line-height:1.25;padding:2px 0 8px 0;">${fullName(d)}</div>
+    ${contactLines(d, s, { iconColor: a })}
+    <div style="font-size:${s.fontSize - 2}px;letter-spacing:1.5px;text-transform:uppercase;color:${TEXT};font-weight:800;padding-top:8px;">${esc(d.company)}</div>
+    ${socialPills(d, s, a)}
+  </td>
+  ${logoImg(d, s) ? `<td valign="top" align="right" style="border-top:1px solid #e5e7eb;padding:12px 0 0 18px;">${logoImg(d, s, 68)}</td>` : ""}
+</tr>
+${bannerRow(d, s, 4)}
+${legalRow(d, s, 4)}`, s);
+    },
+  },
+  {
+    id: "pulse-motion",
+    name: "Pulse Motion",
+    category: "Motion",
+    description: "Living accent bar animates in Gmail & Apple Mail (GIF-based; Outlook desktop shows a static frame).",
+    defaultAccent: "#84CC16",
+    premium: true,
+    render(d, s) {
+      const a = esc(s.accent);
+      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      const gif = `${origin}/pulse-bar.gif`;
+      return wrap(`
+<tr>
+  ${photoImg(d, s, 80) ? `<td valign="middle" style="padding-right:16px;">${photoImg(d, s, 80)}</td>` : ""}
+  <td valign="middle">
+    <div style="font-size:${s.fontSize + 6}px;font-weight:800;color:${TEXT};letter-spacing:-.3px;line-height:1.15;">${fullName(d)}</div>
+    <div style="font-size:${s.fontSize}px;color:${MUTED};padding:2px 0 8px 0;">${esc(d.jobTitle)} · <span style="color:${TEXT};font-weight:700;">${esc(d.company)}</span></div>
+    <img src="${gif}" width="240" height="8" alt="" style="display:block;border:0;border-radius:4px;width:240px;height:8px;" />
+    <div style="padding-top:10px;font-size:${s.fontSize - 1}px;color:${MUTED};">${contactInline(d, s, MUTED, "&nbsp;&nbsp;·&nbsp;&nbsp;")}</div>
+    ${socialPills(d, s, "#ffffff", a)}
+    ${ctaBtn(d, s, a, "#111111")}
+  </td>
+  ${logoImg(d, s) ? `<td valign="top" align="right" style="padding-left:18px;">${logoImg(d, s, 72)}</td>` : ""}
+</tr>
+${bannerRow(d, s, 3)}
+${legalRow(d, s, 3)}`, s);
+    },
+  },
 ];
 
 /* ---------- engine ---------- */
