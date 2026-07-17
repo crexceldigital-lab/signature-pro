@@ -3,19 +3,30 @@ import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { TopBar } from "@/components/top-bar";
+import { CommandPalette } from "@/components/command-palette";
 import { useAuth } from "@/lib/auth-context";
 
 export const Route = createFileRoute("/app")({
+  ssr: false,
   component: AppLayout,
 });
 
 function AppLayout() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthenticated) navigate({ to: "/auth" });
-  }, [isAuthenticated, navigate]);
+    if (!loading && !isAuthenticated) navigate({ to: "/auth" });
+  }, [isAuthenticated, loading, navigate]);
+
+  if (loading) {
+    return (
+      <div className="grid min-h-screen place-items-center bg-background">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+  if (!isAuthenticated) return null;
 
   return (
     <SidebarProvider>
@@ -28,6 +39,7 @@ function AppLayout() {
           </main>
         </SidebarInset>
       </div>
+      <CommandPalette />
     </SidebarProvider>
   );
 }
