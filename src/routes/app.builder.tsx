@@ -1,4 +1,4 @@
-import { useMemo, useState } from "https://esm.sh/react";
+import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Copy, Download, Code2, FileImage, Printer } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
