@@ -14,9 +14,12 @@ import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppTemplatesRouteImport } from './routes/app.templates'
+import { Route as AppOrganizationRouteImport } from './routes/app.organization'
 import { Route as AppEmployeesRouteImport } from './routes/app.employees'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
+import { Route as AppCampaignsRouteImport } from './routes/app.campaigns'
 import { Route as AppBuilderRouteImport } from './routes/app.builder'
+import { Route as AppBannersRouteImport } from './routes/app.banners'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -43,6 +46,11 @@ const AppTemplatesRoute = AppTemplatesRouteImport.update({
   path: '/templates',
   getParentRoute: () => AppRoute,
 } as any)
+const AppOrganizationRoute = AppOrganizationRouteImport.update({
+  id: '/organization',
+  path: '/organization',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppEmployeesRoute = AppEmployeesRouteImport.update({
   id: '/employees',
   path: '/employees',
@@ -53,9 +61,19 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCampaignsRoute = AppCampaignsRouteImport.update({
+  id: '/campaigns',
+  path: '/campaigns',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppBuilderRoute = AppBuilderRouteImport.update({
   id: '/builder',
   path: '/builder',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppBannersRoute = AppBannersRouteImport.update({
+  id: '/banners',
+  path: '/banners',
   getParentRoute: () => AppRoute,
 } as any)
 
@@ -63,18 +81,24 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/app/banners': typeof AppBannersRoute
   '/app/builder': typeof AppBuilderRoute
+  '/app/campaigns': typeof AppCampaignsRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/employees': typeof AppEmployeesRoute
+  '/app/organization': typeof AppOrganizationRoute
   '/app/templates': typeof AppTemplatesRoute
   '/app/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/app/banners': typeof AppBannersRoute
   '/app/builder': typeof AppBuilderRoute
+  '/app/campaigns': typeof AppCampaignsRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/employees': typeof AppEmployeesRoute
+  '/app/organization': typeof AppOrganizationRoute
   '/app/templates': typeof AppTemplatesRoute
   '/app': typeof AppIndexRoute
 }
@@ -83,9 +107,12 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/app/banners': typeof AppBannersRoute
   '/app/builder': typeof AppBuilderRoute
+  '/app/campaigns': typeof AppCampaignsRoute
   '/app/dashboard': typeof AppDashboardRoute
   '/app/employees': typeof AppEmployeesRoute
+  '/app/organization': typeof AppOrganizationRoute
   '/app/templates': typeof AppTemplatesRoute
   '/app/': typeof AppIndexRoute
 }
@@ -95,18 +122,24 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/auth'
+    | '/app/banners'
     | '/app/builder'
+    | '/app/campaigns'
     | '/app/dashboard'
     | '/app/employees'
+    | '/app/organization'
     | '/app/templates'
     | '/app/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
+    | '/app/banners'
     | '/app/builder'
+    | '/app/campaigns'
     | '/app/dashboard'
     | '/app/employees'
+    | '/app/organization'
     | '/app/templates'
     | '/app'
   id:
@@ -114,9 +147,12 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/auth'
+    | '/app/banners'
     | '/app/builder'
+    | '/app/campaigns'
     | '/app/dashboard'
     | '/app/employees'
+    | '/app/organization'
     | '/app/templates'
     | '/app/'
   fileRoutesById: FileRoutesById
@@ -164,6 +200,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTemplatesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/organization': {
+      id: '/app/organization'
+      path: '/organization'
+      fullPath: '/app/organization'
+      preLoaderRoute: typeof AppOrganizationRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/employees': {
       id: '/app/employees'
       path: '/employees'
@@ -178,6 +221,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/campaigns': {
+      id: '/app/campaigns'
+      path: '/campaigns'
+      fullPath: '/app/campaigns'
+      preLoaderRoute: typeof AppCampaignsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/builder': {
       id: '/app/builder'
       path: '/builder'
@@ -185,21 +235,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppBuilderRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/banners': {
+      id: '/app/banners'
+      path: '/banners'
+      fullPath: '/app/banners'
+      preLoaderRoute: typeof AppBannersRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppBannersRoute: typeof AppBannersRoute
   AppBuilderRoute: typeof AppBuilderRoute
+  AppCampaignsRoute: typeof AppCampaignsRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppEmployeesRoute: typeof AppEmployeesRoute
+  AppOrganizationRoute: typeof AppOrganizationRoute
   AppTemplatesRoute: typeof AppTemplatesRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppBannersRoute: AppBannersRoute,
   AppBuilderRoute: AppBuilderRoute,
+  AppCampaignsRoute: AppCampaignsRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppEmployeesRoute: AppEmployeesRoute,
+  AppOrganizationRoute: AppOrganizationRoute,
   AppTemplatesRoute: AppTemplatesRoute,
   AppIndexRoute: AppIndexRoute,
 }
