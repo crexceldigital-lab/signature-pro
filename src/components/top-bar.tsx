@@ -24,13 +24,15 @@ export function TopBar() {
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b bg-background/80 px-4 backdrop-blur">
       <SidebarTrigger />
-      <div className="relative hidden md:block">
-        <Search className="pointer-events-none absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          placeholder="Search employees, templates, campaigns…"
-          className="w-[380px] pl-8"
-        />
-      </div>
+      <button
+        type="button"
+        onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }))}
+        className="relative hidden h-9 w-[380px] items-center gap-2 rounded-md border bg-muted/40 px-3 text-left text-sm text-muted-foreground hover:bg-muted md:flex"
+      >
+        <Search className="h-4 w-4" />
+        <span>Search or jump to…</span>
+        <kbd className="ml-auto rounded border bg-background px-1.5 py-0.5 font-mono text-[10px]">⌘K</kbd>
+      </button>
       <div className="ml-auto flex items-center gap-1">
         <Button asChild variant="ghost" size="icon" aria-label="Notifications">
           <Link to="/app/notifications">
