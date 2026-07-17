@@ -83,9 +83,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Design, manage, and deploy on-brand email signatures across your entire organization. Templates, banners, analytics, and one-click install." },
       { name: "author", content: "SignatureFlow" },
       { property: "og:title", content: "SignatureFlow — AI Email Signature Platform" },
-      { property: "og:description", content: "Design, manage, and deploy on-brand email signatures across your entire organization." },
+      { property: "og:description", content: "Design, manage, and deploy on-brand email signatures across your entire organization. Templates, banners, analytics, and one-click install." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "SignatureFlow — AI Email Signature Platform" },
+      { name: "twitter:description", content: "Design, manage, and deploy on-brand email signatures across your entire organization. Templates, banners, analytics, and one-click install." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a27e2dd5-fa43-4291-aee7-9ef9c72bbd2f/id-preview-aa672f70--c60e7b36-ddb8-4df3-93d5-a7acbe87c472.lovable.app-1784317698093.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a27e2dd5-fa43-4291-aee7-9ef9c72bbd2f/id-preview-aa672f70--c60e7b36-ddb8-4df3-93d5-a7acbe87c472.lovable.app-1784317698093.png" },
     ],
     links: [
       {
