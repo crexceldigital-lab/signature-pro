@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 import { useMemo, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Sparkles, Wand2, Loader2, Copy, PencilRuler } from "lucide-react";
-=======
-import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
-import { Sparkles, Wand2, Loader2, Copy } from "lucide-react";
->>>>>>> b2e9cef012e0d90c784bc318aeab021d557eb641
 import { useServerFn } from "@tanstack/react-start";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,13 +10,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-<<<<<<< HEAD
 import { generateSignatureDesign, type AiVariant } from "@/lib/ai.functions";
 import { defaultSignature, type SignatureData, type SignatureStyle } from "@/lib/signature";
 import { renderSignature, getTemplate } from "@/lib/signature-templates";
-=======
-import { generateSignatureDesign } from "@/lib/ai.functions";
->>>>>>> b2e9cef012e0d90c784bc318aeab021d557eb641
 
 export const Route = createFileRoute("/app/ai-designer")({
   component: AiDesigner,
@@ -33,7 +23,6 @@ const presets = [
   "Bold sales rep signature with clickable CTA button and calendar link.",
   "Creative studio signature with portrait avatar and portfolio link.",
   "Enterprise legal signature with confidentiality footer and clean typography.",
-<<<<<<< HEAD
   "Luxury real-estate signature with gold serif and framed layout.",
   "Tech startup signature with side rail and product-blue accent.",
 ];
@@ -59,11 +48,6 @@ function styleFromVariant(v: AiVariant): SignatureStyle {
 
 function AiDesigner() {
   const navigate = useNavigate();
-=======
-];
-
-function AiDesigner() {
->>>>>>> b2e9cef012e0d90c784bc318aeab021d557eb641
   const [brief, setBrief] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -72,7 +56,6 @@ function AiDesigner() {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [website, setWebsite] = useState("");
-<<<<<<< HEAD
   const [variants, setVariants] = useState<AiVariant[]>([]);
   const [selected, setSelected] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -98,12 +81,6 @@ function AiDesigner() {
     return v ? renderSignature(previewData, styleFromVariant(v)) : "";
   }, [variants, selected, previewData]);
 
-=======
-  const [html, setHtml] = useState<string>("");
-  const [busy, setBusy] = useState(false);
-  const runFn = useServerFn(generateSignatureDesign);
-
->>>>>>> b2e9cef012e0d90c784bc318aeab021d557eb641
   const run = async () => {
     if (!brief.trim()) return toast.error("Add a brief describing the signature you want.");
     setBusy(true);
@@ -114,14 +91,9 @@ function AiDesigner() {
           employee: { firstName, lastName, jobTitle, company, email, phone, website },
         },
       });
-<<<<<<< HEAD
       setVariants(res.variants);
       setSelected(0);
       toast.success(`${res.variants.length} designs generated`);
-=======
-      setHtml(res.html);
-      toast.success("Signature generated");
->>>>>>> b2e9cef012e0d90c784bc318aeab021d557eb641
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Generation failed");
     } finally {
@@ -130,7 +102,6 @@ function AiDesigner() {
   };
 
   const copy = async () => {
-<<<<<<< HEAD
     await navigator.clipboard.writeText(selectedHtml);
     toast.success("HTML copied");
   };
@@ -141,21 +112,11 @@ function AiDesigner() {
     void navigate({ to: "/app/builder", search: { template: v.templateId } });
   };
 
-=======
-    await navigator.clipboard.writeText(html);
-    toast.success("HTML copied");
-  };
-
->>>>>>> b2e9cef012e0d90c784bc318aeab021d557eb641
   return (
     <div>
       <PageHeader
         title="AI Signature Designer"
-<<<<<<< HEAD
         description="Describe the vibe. The AI art-directs 3 distinct designs from our template engine — always polished, always email-safe."
-=======
-        description="Describe the signature you want. Our AI drafts email-safe, table-based HTML you can install immediately."
->>>>>>> b2e9cef012e0d90c784bc318aeab021d557eb641
         actions={<Badge variant="secondary" className="gap-1"><Sparkles className="h-3 w-3" /> Powered by Lovable AI</Badge>}
       />
 
@@ -167,11 +128,7 @@ function AiDesigner() {
               <Textarea
                 rows={5}
                 className="mt-1.5"
-<<<<<<< HEAD
                 placeholder="e.g. Bold agency signature, orange brand color, big CTA to book a call…"
-=======
-                placeholder="e.g. Modern minimal signature with a lime accent bar, avatar on the left, LinkedIn + calendar CTA…"
->>>>>>> b2e9cef012e0d90c784bc318aeab021d557eb641
                 value={brief}
                 onChange={(e) => setBrief(e.target.value)}
               />
@@ -200,16 +157,11 @@ function AiDesigner() {
 
             <Button onClick={run} disabled={busy} className="w-full">
               {busy ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wand2 className="mr-2 h-4 w-4" />}
-<<<<<<< HEAD
               {busy ? "Art-directing…" : "Generate 3 designs"}
-=======
-              {busy ? "Designing…" : "Generate signature"}
->>>>>>> b2e9cef012e0d90c784bc318aeab021d557eb641
             </Button>
           </CardContent>
         </Card>
 
-<<<<<<< HEAD
         <div className="space-y-4 lg:col-span-3">
           {variants.length > 0 && (
             <div className="grid gap-3 sm:grid-cols-3">
@@ -284,37 +236,3 @@ function AiDesigner() {
     </div>
   );
 }
-=======
-        <Card className="lg:col-span-3 shadow-elegant">
-          <CardContent className="p-6">
-            <div className="mb-4 flex items-center justify-between">
-              <div>
-                <div className="text-xs font-medium uppercase tracking-widest text-muted-foreground">Preview</div>
-                <div className="font-display text-lg font-semibold">Live email preview</div>
-              </div>
-              <Button variant="outline" size="sm" onClick={copy} disabled={!html}>
-                <Copy className="mr-1.5 h-3.5 w-3.5" /> Copy HTML
-              </Button>
-            </div>
-            <div className="rounded-lg border bg-card p-6">
-              {html ? (
-                <div dangerouslySetInnerHTML={{ __html: html }} />
-              ) : (
-                <div className="grid h-64 place-items-center text-sm text-muted-foreground">
-                  Your AI-generated signature will appear here.
-                </div>
-              )}
-            </div>
-            {html && (
-              <details className="mt-4">
-                <summary className="cursor-pointer text-xs text-muted-foreground">View generated HTML</summary>
-                <pre className="mt-2 max-h-64 overflow-auto rounded-md bg-muted p-3 text-xs">{html}</pre>
-              </details>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
-}
->>>>>>> b2e9cef012e0d90c784bc318aeab021d557eb641
