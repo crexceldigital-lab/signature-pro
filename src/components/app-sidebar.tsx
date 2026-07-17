@@ -13,6 +13,8 @@ import {
   Settings,
   ShieldCheck,
   Sparkles,
+  Plug,
+  Wand2,
 } from "lucide-react";
 import {
   Sidebar,
@@ -30,10 +32,12 @@ import { useAuth } from "@/lib/auth-context";
 
 const workspace = [
   { title: "Dashboard", url: "/app/dashboard", icon: LayoutDashboard },
+  { title: "AI Designer", url: "/app/ai-designer", icon: Wand2 },
   { title: "Signature Builder", url: "/app/builder", icon: PenTool },
   { title: "Templates", url: "/app/templates", icon: LayoutTemplate },
   { title: "Employees", url: "/app/employees", icon: Users },
   { title: "Organization", url: "/app/organization", icon: Building2 },
+  { title: "Integrations", url: "/app/integrations", icon: Plug },
 ];
 
 const marketing = [
