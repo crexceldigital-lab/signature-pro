@@ -1,7 +1,8 @@
-import { buildSignatureHTML, type SignatureData, type SignatureStyle } from "@/lib/signature";
+import { renderSignature } from "@/lib/signature-templates";
+import type { SignatureData, SignatureStyle } from "@/lib/signature";
 
 export function SignaturePreview({ data, style }: { data: SignatureData; style: SignatureStyle }) {
-  const html = buildSignatureHTML(data, style);
+  const html = renderSignature(data, style);
   return (
     <div className="rounded-lg border bg-white p-6 text-black shadow-elegant">
       <div className="mb-4 text-xs uppercase tracking-widest text-neutral-500">Email preview</div>

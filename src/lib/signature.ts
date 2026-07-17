@@ -43,6 +43,8 @@ export interface SignatureStyle {
   showQR: boolean;
   showLegal: boolean;
   showCTA: boolean;
+  showLogo: boolean;
+  templateId?: string;
 }
 
 export const defaultSignature: SignatureData = {
@@ -56,7 +58,7 @@ export const defaultSignature: SignatureData = {
   mobile: "+1 (415) 555-9101",
   website: "acmestudio.com",
   address: "500 Market Street, San Francisco, CA",
-  logoUrl: "",
+  logoUrl: "https://api.dicebear.com/9.x/shapes/svg?seed=Acme&backgroundColor=transparent",
   photoUrl: "https://api.dicebear.com/9.x/notionists/svg?seed=Ava&backgroundColor=b6e3f4",
   bannerUrl: "",
   bannerLink: "https://acmestudio.com/launch",
@@ -85,6 +87,8 @@ export const defaultStyle: SignatureStyle = {
   showQR: false,
   showLegal: true,
   showCTA: true,
+  showLogo: true,
+  templateId: "accent-bar",
 };
 
 const SOCIAL_URLS: Record<string, (handle: string) => string> = {
@@ -109,7 +113,7 @@ const SOCIAL_LABEL: Record<string, string> = {
   whatsapp: "WA",
 };
 
-function esc(s: string | undefined): string {
+export function esc(s: string | undefined): string {
   if (!s) return "";
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }

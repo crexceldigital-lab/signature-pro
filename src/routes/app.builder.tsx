@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Copy, Download, Code2, FileImage, Printer } from "lucide-react";
+import { Copy, Download, Code2, Printer, Check } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,22 +12,39 @@ import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SignaturePreview } from "@/components/signature-preview";
-import { buildSignatureHTML, defaultSignature, defaultStyle, downloadFile, type SignatureData, type SignatureStyle } from "@/lib/signature";
+import { ImageUpload } from "@/components/image-upload";
+import { defaultSignature, defaultStyle, downloadFile, type SignatureData, type SignatureStyle } from "@/lib/signature";
+import { renderSignature, TEMPLATES, SAMPLE_DATA, sampleStyleFor, getTemplate } from "@/lib/signature-templates";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/app/builder")({
   component: Builder,
+  validateSearch: (search: Record<string, unknown>): { template?: string } => ({
+    template: typeof search.template === "string" ? search.template : undefined,
+  }),
 });
 
 function Builder() {
+  const { template } = Route.useSearch();
   const [data, setData] = useState<SignatureData>(defaultSignature);
   const [style, setStyle] = useState<SignatureStyle>(defaultStyle);
-  const html = useMemo(() => buildSignatureHTML(data, style), [data, style]);
+  const html = useMemo(() => renderSignature(data, style), [data, style]);
+
+  // Coming from the Templates gallery: load that design + its accent
+  useEffect(() => {
+    const t = getTemplate(template);
+    if (t) setStyle((s) => ({ ...s, templateId: t.id, accent: t.defaultAccent }));
+  }, [template]);
 
   const set = <K extends keyof SignatureData>(k: K, v: SignatureData[K]) => setData((d) => ({ ...d, [k]: v }));
   const setSocial = (k: keyof SignatureData["socials"], v: string) =>
     setData((d) => ({ ...d, socials: { ...d.socials, [k]: v } }));
   const setS = <K extends keyof SignatureStyle>(k: K, v: SignatureStyle[K]) => setStyle((s) => ({ ...s, [k]: v }));
+
+  const pickTemplate = (id: string) => {
+    const t = getTemplate(id);
+    setStyle((s) => ({ ...s, templateId: id, accent: t?.defaultAccent ?? s.accent }));
+  };
 
   const copy = async (content: string, label: string) => {
     await navigator.clipboard.writeText(content);
@@ -58,7 +75,7 @@ function Builder() {
     <div>
       <PageHeader
         title="Signature Builder"
-        description="Craft a signature and watch it render in a real email preview. Export as HTML, rich text, or PNG."
+        description="Pick a design, add your details and logo, and export email-safe HTML."
         actions={
           <>
             <Button variant="outline" onClick={copyRich}><Copy className="mr-1.5 h-4 w-4" /> Copy rich text</Button>
@@ -67,12 +84,44 @@ function Builder() {
         }
       />
 
+      {/* Template picker strip */}
+      <div className="mb-6 -mx-1 overflow-x-auto pb-2">
+        <div className="flex gap-3 px-1">
+          {TEMPLATES.map((t) => {
+            const active = style.templateId === t.id;
+            return (
+              <button
+                key={t.id}
+                onClick={() => pickTemplate(t.id)}
+                className={`relative w-52 shrink-0 overflow-hidden rounded-lg border bg-white text-left transition ${
+                  active ? "border-brand ring-2 ring-brand/40" : "hover:border-foreground/30"
+                }`}
+                aria-pressed={active}
+              >
+                <div className="pointer-events-none relative h-20 overflow-hidden">
+                  <div
+                    className="absolute left-2 top-2 origin-top-left"
+                    style={{ transform: "scale(0.3)", width: "330%" }}
+                    dangerouslySetInnerHTML={{ __html: t.render(SAMPLE_DATA, sampleStyleFor(t)) }}
+                  />
+                </div>
+                <div className="flex items-center justify-between border-t bg-background px-2.5 py-1.5">
+                  <span className="truncate text-xs font-medium">{t.name}</span>
+                  {active && <Check className="h-3.5 w-3.5 shrink-0 text-brand" />}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="grid gap-6 lg:grid-cols-[minmax(340px,420px)_1fr]">
         <Card className="shadow-elegant">
           <CardContent className="p-0">
             <Tabs defaultValue="content">
               <TabsList className="w-full rounded-none border-b bg-transparent p-0">
                 <TabsTrigger value="content" className="flex-1 rounded-none">Content</TabsTrigger>
+                <TabsTrigger value="images" className="flex-1 rounded-none">Images</TabsTrigger>
                 <TabsTrigger value="style" className="flex-1 rounded-none">Style</TabsTrigger>
                 <TabsTrigger value="modules" className="flex-1 rounded-none">Modules</TabsTrigger>
                 <TabsTrigger value="export" className="flex-1 rounded-none">Export</TabsTrigger>
@@ -94,7 +143,6 @@ function Builder() {
                 </div>
                 <Field label="Website"><Input value={data.website ?? ""} onChange={(e) => set("website", e.target.value)} /></Field>
                 <Field label="Address"><Input value={data.address ?? ""} onChange={(e) => set("address", e.target.value)} /></Field>
-                <Field label="Photo URL"><Input value={data.photoUrl ?? ""} onChange={(e) => set("photoUrl", e.target.value)} /></Field>
                 <div className="border-t pt-4">
                   <div className="mb-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">Socials</div>
                   <div className="grid grid-cols-2 gap-3">
@@ -113,24 +161,42 @@ function Builder() {
                     <Field label="CTA link"><Input value={data.ctaLink ?? ""} onChange={(e) => set("ctaLink", e.target.value)} /></Field>
                   </div>
                   <Field label="QR target URL"><Input value={data.qrUrl ?? ""} onChange={(e) => set("qrUrl", e.target.value)} /></Field>
-                  <Field label="Banner image URL"><Input value={data.bannerUrl ?? ""} onChange={(e) => set("bannerUrl", e.target.value)} /></Field>
-                  <Field label="Banner link"><Input value={data.bannerLink ?? ""} onChange={(e) => set("bannerLink", e.target.value)} /></Field>
                   <Field label="Legal disclaimer"><Textarea value={data.legal ?? ""} onChange={(e) => set("legal", e.target.value)} rows={3} /></Field>
                 </div>
               </TabsContent>
 
+              <TabsContent value="images" className="space-y-5 p-5">
+                <ImageUpload
+                  label="Company logo"
+                  folder="logos"
+                  value={data.logoUrl ?? ""}
+                  onChange={(url) => set("logoUrl", url)}
+                  hint="PNG or SVG with transparent background works best. Shown wherever the selected template places the brand mark."
+                />
+                <div className="border-t pt-5">
+                  <ImageUpload
+                    label="Profile photo"
+                    folder="photos"
+                    value={data.photoUrl ?? ""}
+                    onChange={(url) => set("photoUrl", url)}
+                    hint="Square images crop cleanest. Toggle round/square under Style."
+                  />
+                </div>
+                <div className="border-t pt-5">
+                  <ImageUpload
+                    label="Marketing banner"
+                    folder="banners"
+                    value={data.bannerUrl ?? ""}
+                    onChange={(url) => set("bannerUrl", url)}
+                    hint="Recommended 520×120px. Link it below."
+                  />
+                  <div className="mt-3">
+                    <Field label="Banner link"><Input value={data.bannerLink ?? ""} onChange={(e) => set("bannerLink", e.target.value)} /></Field>
+                  </div>
+                </div>
+              </TabsContent>
+
               <TabsContent value="style" className="space-y-5 p-5">
-                <Field label="Layout">
-                  <Select value={style.layout} onValueChange={(v) => setS("layout", v as SignatureStyle["layout"])}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="photo-left">Photo left</SelectItem>
-                      <SelectItem value="photo-right">Photo right</SelectItem>
-                      <SelectItem value="stacked">Stacked</SelectItem>
-                      <SelectItem value="minimal">Minimal one-line</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </Field>
                 <Field label="Font">
                   <Select value={style.font} onValueChange={(v) => setS("font", v)}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
@@ -161,21 +227,11 @@ function Builder() {
                     </SelectContent>
                   </Select>
                 </Field>
-                <Field label="Divider style">
-                  <Select value={style.divider} onValueChange={(v) => setS("divider", v as SignatureStyle["divider"])}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="solid">Solid</SelectItem>
-                      <SelectItem value="dashed">Dashed</SelectItem>
-                      <SelectItem value="double">Double</SelectItem>
-                      <SelectItem value="none">None</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </Field>
               </TabsContent>
 
               <TabsContent value="modules" className="space-y-3 p-5">
                 {([
+                  ["showLogo", "Company logo"],
                   ["showPhoto", "Profile photo"],
                   ["showBanner", "Marketing banner"],
                   ["showSocials", "Social icons"],
@@ -202,9 +258,6 @@ function Builder() {
                 </Button>
                 <Button className="w-full justify-start" variant="outline" onClick={() => downloadFile("signature.html", html)}>
                   <Download className="mr-2 h-4 w-4" /> Download .html
-                </Button>
-                <Button className="w-full justify-start" variant="outline" onClick={() => toast.info("PNG export queued (mock)")}>
-                  <FileImage className="mr-2 h-4 w-4" /> Download PNG
                 </Button>
                 <Button className="w-full justify-start" variant="outline" onClick={print}>
                   <Printer className="mr-2 h-4 w-4" /> Print preview
