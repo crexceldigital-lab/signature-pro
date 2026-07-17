@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/lib/auth-context";
+import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
@@ -20,34 +22,71 @@ export const Route = createFileRoute("/auth")({
 });
 
 function AuthPage() {
-  const { login, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [orgName, setOrgName] = useState("");
+  const [busy, setBusy] = useState(false);
   const [mode, setMode] = useState<"signin" | "signup" | "forgot">("signin");
 
   useEffect(() => {
     if (isAuthenticated) navigate({ to: "/app/dashboard" });
   }, [isAuthenticated, navigate]);
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (mode === "forgot") {
-      toast.success("Reset link sent", { description: `Check ${email} for password reset instructions.` });
-      setMode("signin");
-      return;
+    setBusy(true);
+    try {
+      if (mode === "forgot") {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/reset-password`,
+        });
+        if (error) throw error;
+        toast.success("Reset link sent", { description: `Check ${email} for instructions.` });
+        setMode("signin");
+        return;
+      }
+      if (!email || !password) return toast.error("Please fill all fields");
+      if (mode === "signup") {
+        const { error } = await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            emailRedirectTo: window.location.origin,
+            data: { full_name: name, org_name: orgName || undefined },
+          },
+        });
+        if (error) throw error;
+        toast.success("Welcome to SignatureFlow");
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        toast.success("Signed in");
+      }
+      navigate({ to: "/app/dashboard" });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Authentication failed");
+    } finally {
+      setBusy(false);
     }
-    if (!email || !password) return toast.error("Please fill all fields");
-    login(email, mode === "signup" ? name : undefined);
-    toast.success(mode === "signup" ? "Welcome to SignatureFlow" : "Signed in");
-    navigate({ to: "/app/dashboard" });
   };
 
-  const social = (provider: string) => {
-    login(`demo@${provider}.com`, "Demo User");
-    toast.success(`Signed in with ${provider}`);
-    navigate({ to: "/app/dashboard" });
+  const social = async (provider: "google" | "microsoft") => {
+    setBusy(true);
+    try {
+      const result = await lovable.auth.signInWithOAuth(provider, {
+        redirect_uri: window.location.origin,
+      });
+      if (result.error) throw result.error;
+      if (result.redirected) return;
+      navigate({ to: "/app/dashboard" });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : `${provider} sign-in failed`);
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
@@ -104,10 +143,16 @@ function AuthPage() {
 
             <form onSubmit={submit} className="mt-6 space-y-4">
               {mode === "signup" && (
-                <div>
-                  <Label htmlFor="name">Full name</Label>
-                  <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Ava Kirsch" className="mt-1.5" />
-                </div>
+                <>
+                  <div>
+                    <Label htmlFor="name">Full name</Label>
+                    <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Ava Kirsch" className="mt-1.5" />
+                  </div>
+                  <div>
+                    <Label htmlFor="org">Company / Workspace</Label>
+                    <Input id="org" value={orgName} onChange={(e) => setOrgName(e.target.value)} placeholder="Acme Studio" className="mt-1.5" />
+                  </div>
+                </>
               )}
               <div>
                 <Label htmlFor="email">Email</Label>
@@ -124,7 +169,7 @@ function AuthPage() {
                   <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1.5" required />
                 </div>
               )}
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" disabled={busy}>
                 {mode === "signin" ? "Sign in" : mode === "signup" ? "Create account" : "Send reset link"}
               </Button>
             </form>
@@ -141,8 +186,8 @@ function AuthPage() {
                   <div className="h-px flex-1 bg-border" />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
-                  <Button variant="outline" onClick={() => social("Google")}>Google</Button>
-                  <Button variant="outline" onClick={() => social("Microsoft")}>Microsoft</Button>
+                  <Button type="button" variant="outline" disabled={busy} onClick={() => social("google")}>Google</Button>
+                  <Button type="button" variant="outline" disabled={busy} onClick={() => social("microsoft")}>Microsoft</Button>
                 </div>
               </>
             )}

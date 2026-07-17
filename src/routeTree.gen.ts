@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
@@ -17,6 +18,7 @@ import { Route as AppTemplatesRouteImport } from './routes/app.templates'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppOrganizationRouteImport } from './routes/app.organization'
 import { Route as AppNotificationsRouteImport } from './routes/app.notifications'
+import { Route as AppIntegrationsRouteImport } from './routes/app.integrations'
 import { Route as AppInstallationRouteImport } from './routes/app.installation'
 import { Route as AppEmployeesRouteImport } from './routes/app.employees'
 import { Route as AppDashboardRouteImport } from './routes/app.dashboard'
@@ -24,8 +26,14 @@ import { Route as AppCampaignsRouteImport } from './routes/app.campaigns'
 import { Route as AppBuilderRouteImport } from './routes/app.builder'
 import { Route as AppBannersRouteImport } from './routes/app.banners'
 import { Route as AppAnalyticsRouteImport } from './routes/app.analytics'
+import { Route as AppAiDesignerRouteImport } from './routes/app.ai-designer'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
 
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -66,6 +74,11 @@ const AppNotificationsRoute = AppNotificationsRouteImport.update({
   path: '/notifications',
   getParentRoute: () => AppRoute,
 } as any)
+const AppIntegrationsRoute = AppIntegrationsRouteImport.update({
+  id: '/integrations',
+  path: '/integrations',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppInstallationRoute = AppInstallationRouteImport.update({
   id: '/installation',
   path: '/installation',
@@ -101,6 +114,11 @@ const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAiDesignerRoute = AppAiDesignerRouteImport.update({
+  id: '/ai-designer',
+  path: '/ai-designer',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppAdminRoute = AppAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -111,7 +129,9 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/ai-designer': typeof AppAiDesignerRoute
   '/app/analytics': typeof AppAnalyticsRoute
   '/app/banners': typeof AppBannersRoute
   '/app/builder': typeof AppBuilderRoute
@@ -119,6 +139,7 @@ export interface FileRoutesByFullPath {
   '/app/dashboard': typeof AppDashboardRoute
   '/app/employees': typeof AppEmployeesRoute
   '/app/installation': typeof AppInstallationRoute
+  '/app/integrations': typeof AppIntegrationsRoute
   '/app/notifications': typeof AppNotificationsRoute
   '/app/organization': typeof AppOrganizationRoute
   '/app/settings': typeof AppSettingsRoute
@@ -128,7 +149,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/ai-designer': typeof AppAiDesignerRoute
   '/app/analytics': typeof AppAnalyticsRoute
   '/app/banners': typeof AppBannersRoute
   '/app/builder': typeof AppBuilderRoute
@@ -136,6 +159,7 @@ export interface FileRoutesByTo {
   '/app/dashboard': typeof AppDashboardRoute
   '/app/employees': typeof AppEmployeesRoute
   '/app/installation': typeof AppInstallationRoute
+  '/app/integrations': typeof AppIntegrationsRoute
   '/app/notifications': typeof AppNotificationsRoute
   '/app/organization': typeof AppOrganizationRoute
   '/app/settings': typeof AppSettingsRoute
@@ -147,7 +171,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/ai-designer': typeof AppAiDesignerRoute
   '/app/analytics': typeof AppAnalyticsRoute
   '/app/banners': typeof AppBannersRoute
   '/app/builder': typeof AppBuilderRoute
@@ -155,6 +181,7 @@ export interface FileRoutesById {
   '/app/dashboard': typeof AppDashboardRoute
   '/app/employees': typeof AppEmployeesRoute
   '/app/installation': typeof AppInstallationRoute
+  '/app/integrations': typeof AppIntegrationsRoute
   '/app/notifications': typeof AppNotificationsRoute
   '/app/organization': typeof AppOrganizationRoute
   '/app/settings': typeof AppSettingsRoute
@@ -167,7 +194,9 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/auth'
+    | '/reset-password'
     | '/app/admin'
+    | '/app/ai-designer'
     | '/app/analytics'
     | '/app/banners'
     | '/app/builder'
@@ -175,6 +204,7 @@ export interface FileRouteTypes {
     | '/app/dashboard'
     | '/app/employees'
     | '/app/installation'
+    | '/app/integrations'
     | '/app/notifications'
     | '/app/organization'
     | '/app/settings'
@@ -184,7 +214,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/reset-password'
     | '/app/admin'
+    | '/app/ai-designer'
     | '/app/analytics'
     | '/app/banners'
     | '/app/builder'
@@ -192,6 +224,7 @@ export interface FileRouteTypes {
     | '/app/dashboard'
     | '/app/employees'
     | '/app/installation'
+    | '/app/integrations'
     | '/app/notifications'
     | '/app/organization'
     | '/app/settings'
@@ -202,7 +235,9 @@ export interface FileRouteTypes {
     | '/'
     | '/app'
     | '/auth'
+    | '/reset-password'
     | '/app/admin'
+    | '/app/ai-designer'
     | '/app/analytics'
     | '/app/banners'
     | '/app/builder'
@@ -210,6 +245,7 @@ export interface FileRouteTypes {
     | '/app/dashboard'
     | '/app/employees'
     | '/app/installation'
+    | '/app/integrations'
     | '/app/notifications'
     | '/app/organization'
     | '/app/settings'
@@ -221,10 +257,18 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -281,6 +325,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppNotificationsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/integrations': {
+      id: '/app/integrations'
+      path: '/integrations'
+      fullPath: '/app/integrations'
+      preLoaderRoute: typeof AppIntegrationsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/installation': {
       id: '/app/installation'
       path: '/installation'
@@ -330,6 +381,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAnalyticsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/ai-designer': {
+      id: '/app/ai-designer'
+      path: '/ai-designer'
+      fullPath: '/app/ai-designer'
+      preLoaderRoute: typeof AppAiDesignerRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/admin': {
       id: '/app/admin'
       path: '/admin'
@@ -342,6 +400,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppAdminRoute: typeof AppAdminRoute
+  AppAiDesignerRoute: typeof AppAiDesignerRoute
   AppAnalyticsRoute: typeof AppAnalyticsRoute
   AppBannersRoute: typeof AppBannersRoute
   AppBuilderRoute: typeof AppBuilderRoute
@@ -349,6 +408,7 @@ interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppEmployeesRoute: typeof AppEmployeesRoute
   AppInstallationRoute: typeof AppInstallationRoute
+  AppIntegrationsRoute: typeof AppIntegrationsRoute
   AppNotificationsRoute: typeof AppNotificationsRoute
   AppOrganizationRoute: typeof AppOrganizationRoute
   AppSettingsRoute: typeof AppSettingsRoute
@@ -358,6 +418,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppAdminRoute: AppAdminRoute,
+  AppAiDesignerRoute: AppAiDesignerRoute,
   AppAnalyticsRoute: AppAnalyticsRoute,
   AppBannersRoute: AppBannersRoute,
   AppBuilderRoute: AppBuilderRoute,
@@ -365,6 +426,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppEmployeesRoute: AppEmployeesRoute,
   AppInstallationRoute: AppInstallationRoute,
+  AppIntegrationsRoute: AppIntegrationsRoute,
   AppNotificationsRoute: AppNotificationsRoute,
   AppOrganizationRoute: AppOrganizationRoute,
   AppSettingsRoute: AppSettingsRoute,
@@ -378,6 +440,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
