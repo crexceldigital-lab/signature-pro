@@ -560,6 +560,87 @@ ${bannerRow(d, s, 3)}
 ${legalRow(d, s, 3)}`, s);
     },
   },
+  {
+    id: "noir-motion",
+    name: "Noir Motion",
+    category: "Motion",
+    description: "Dark studio card with cream display name, accent labels, and a pulsing arrow — agency-grade.",
+    defaultAccent: "#FF4D00",
+    premium: true,
+    render(d, s) {
+      const a = esc(s.accent);
+      const BG = "#0B0B0A";
+      const CREAM = "#EDE8D0";
+      const FAINT = "#B8B4A4";
+      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      const label = (t: string) =>
+        `<div style="font-size:${s.fontSize}px;font-weight:700;color:${a};padding-bottom:6px;">${t}</div>`;
+      const line = (t: string) =>
+        `<div style="font-size:${s.fontSize - 1}px;color:${CREAM};line-height:1.65;">${t}</div>`;
+      const socials = Object.entries(d.socials).filter(([, h]) => h);
+      const handle = socials.length
+        ? `<a href="${esc(SOCIAL_URLS[socials[0][0]]?.(socials[0][1]!) ?? "#")}" style="color:${FAINT};text-decoration:none;font-size:${s.fontSize}px;">${socials[0][0] === "instagram" ? "◎ " : ""}${esc(socials[0][1]!)}</a>`
+        : "";
+      return wrap(`
+<tr><td bgcolor="${BG}" style="background:${BG};border-radius:14px;padding:30px 34px;">
+  <table cellpadding="0" cellspacing="0" border="0" role="presentation" width="100%">
+    <tr>
+      <td>
+        <div style="font-family:'Trebuchet MS',Arial,sans-serif;font-size:${s.fontSize + 18}px;font-weight:800;color:${CREAM};line-height:1.08;letter-spacing:.5px;">${esc(d.firstName)}<br/>${esc(d.lastName)}</div>
+        <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="margin-top:8px;"><tr>
+          <td style="font-size:${s.fontSize + 1}px;font-weight:700;color:${a};padding-right:14px;">${esc(d.jobTitle)}</td>
+          <td><img src="${origin}/arrow-pulse.gif" width="48" height="20" alt="" style="display:block;border:0;" /></td>
+        </tr></table>
+      </td>
+      ${logoImg(d, s) ? `<td valign="top" align="right">${logoImg(d, s, 72)}</td>` : ""}
+    </tr>
+    <tr><td colspan="2" style="padding-top:22px;">
+      <table cellpadding="0" cellspacing="0" border="0" role="presentation" width="100%"><tr>
+        ${d.address ? `<td valign="top" style="padding-right:34px;">${label("Address")}${line(esc(d.address).replace(/,\s*/g, "<br/>"))}</td>` : ""}
+        <td valign="top" style="padding-right:34px;">
+          ${label("Contact")}
+          ${d.phone ? line(`<a href="tel:${esc(d.phone)}" style="color:${CREAM};text-decoration:none;">${esc(d.phone)}</a>`) : ""}
+          ${d.email ? line(`<a href="mailto:${esc(d.email)}" style="color:${CREAM};text-decoration:none;">${esc(d.email)}</a>`) : ""}
+          ${d.website ? line(`<a href="https://${esc(d.website.replace(/^https?:\/\//, ""))}" style="color:${CREAM};text-decoration:none;">${esc(d.website)}</a>`) : ""}
+        </td>
+        <td valign="bottom" align="right">${s.showSocials ? handle : ""}</td>
+      </tr></table>
+    </td></tr>
+    ${s.showCTA && d.ctaText && d.ctaLink ? `<tr><td colspan="2" style="padding-top:18px;"><a href="${esc(d.ctaLink)}" style="display:inline-block;padding:9px 18px;border:1.5px solid ${a};color:${a};text-decoration:none;border-radius:999px;font-weight:700;font-size:${s.fontSize - 1}px;">${esc(d.ctaText)}</a></td></tr>` : ""}
+  </table>
+</td></tr>
+${s.showLegal && d.legal ? `<tr><td style="padding-top:10px;color:#9ca3af;font-size:10px;line-height:1.5;">${esc(d.legal)}</td></tr>` : ""}`, s);
+    },
+  },
+  {
+    id: "noir-type",
+    name: "Noir Type",
+    category: "Motion",
+    description: "Dark typographic card with a blinking cursor after the name — quietly alive.",
+    defaultAccent: "#84CC16",
+    premium: true,
+    render(d, s) {
+      const a = esc(s.accent);
+      const BG = "#0B0B0A";
+      const CREAM = "#EDE8D0";
+      const origin = typeof window !== "undefined" ? window.location.origin : "";
+      return wrap(`
+<tr><td bgcolor="${BG}" style="background:${BG};border-radius:14px;padding:26px 30px;">
+  <table cellpadding="0" cellspacing="0" border="0" role="presentation"><tr>
+    <td style="font-family:'Courier New',monospace;font-size:${s.fontSize + 10}px;font-weight:700;color:${CREAM};letter-spacing:-.5px;">${fullName(d)}</td>
+    <td style="padding-left:6px;"><img src="${origin}/cursor-blink.gif" width="12" height="22" alt="" style="display:block;border:0;" /></td>
+  </tr></table>
+  <div style="font-family:'Courier New',monospace;font-size:${s.fontSize - 1}px;color:${a};padding:6px 0 14px 0;">// ${esc(d.jobTitle)} @ ${esc(d.company)}</div>
+  <div style="font-family:'Courier New',monospace;font-size:${s.fontSize - 1}px;color:${CREAM};line-height:1.8;">
+    ${d.email ? `<a href="mailto:${esc(d.email)}" style="color:${CREAM};text-decoration:none;">${esc(d.email)}</a><br/>` : ""}
+    ${d.phone ? `<a href="tel:${esc(d.phone)}" style="color:${CREAM};text-decoration:none;">${esc(d.phone)}</a><br/>` : ""}
+    ${d.website ? `<a href="https://${esc(d.website.replace(/^https?:\/\//, ""))}" style="color:${a};text-decoration:none;">${esc(d.website)}</a>` : ""}
+  </div>
+  ${socialPills(d, s, BG, CREAM)}
+</td></tr>
+${s.showLegal && d.legal ? `<tr><td style="padding-top:10px;color:#9ca3af;font-size:10px;line-height:1.5;">${esc(d.legal)}</td></tr>` : ""}`, s);
+    },
+  },
 ];
 
 /* ---------- engine ---------- */
