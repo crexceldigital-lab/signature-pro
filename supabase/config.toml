@@ -1,1 +1,3 @@
-project_id = "yqorbnlmcdicvvdrcmua"
+project_id = "yqorbnlmcdicvvdrcmua"git add .
+git commit -m "Update lovable integration index"
+git push
