@@ -1,8 +1,13 @@
 declare module "@lovable.dev/cloud-auth-js" {
+  export type LovableAuthTokens = {
+    access_token: string;
+    refresh_token: string;
+  };
+
   export type LovableAuthResult = {
     redirected?: boolean;
     error?: Error | null;
-    tokens?: unknown;
+    tokens?: LovableAuthTokens;
   };
 
   export type SignInOptions = {
