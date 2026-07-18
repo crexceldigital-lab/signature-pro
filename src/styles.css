@@ -172,9 +172,7 @@
 }
 
 @utility text-balance {
-  @supports (text-wrap: balance) {
-    text-wrap: balance;
-  }
+  text-wrap: balance;
 }
 
 /* ---------------------------------------------------------------- */
