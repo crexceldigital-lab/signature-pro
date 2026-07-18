@@ -9,6 +9,20 @@ type SignInOptions = {
   extraParams?: Record<string, string>;
 };
 
+type LovableAuthTokens = {
+  access_token: string;
+  refresh_token: string;
+};
+
+function isLovableAuthTokens(value: unknown): value is LovableAuthTokens {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    typeof (value as any).access_token === 'string' &&
+    typeof (value as any).refresh_token === 'string'
+  );
+}
+
 export const lovable = {
   auth: {
     signInWithOAuth: async (provider: "google" | "apple" | "microsoft" | "lovable", opts?: SignInOptions) => {
@@ -28,6 +42,9 @@ export const lovable = {
       }
 
       try {
+        if (!isLovableAuthTokens(result.tokens)) {
+          return { error: new Error('Invalid auth tokens returned from Lovable.') };
+        }
         await supabase.auth.setSession(result.tokens);
       } catch (e) {
         return { error: e instanceof Error ? e : new Error(String(e)) };
