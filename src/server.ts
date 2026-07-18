@@ -47,6 +47,13 @@ function isH3SwallowedErrorBody(body: string): boolean {
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      // MCP endpoint for AI agents — handled before the app router.
+      const url = new URL(request.url);
+      if (url.pathname === "/api/mcp") {
+        const { handleMcpRequest } = await import("./lib/mcp/http.server");
+        return await handleMcpRequest(request);
+      }
+
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);

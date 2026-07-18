@@ -641,6 +641,223 @@ ${s.showLegal && d.legal ? `<tr><td style="padding-top:10px;color:#9ca3af;font-s
 ${s.showLegal && d.legal ? `<tr><td style="padding-top:10px;color:#9ca3af;font-size:10px;line-height:1.5;">${esc(d.legal)}</td></tr>` : ""}`, s);
     },
   },
+  {
+    id: "brand-footer",
+    name: "Brand Footer",
+    category: "Corporate",
+    description: "White card, logo beside a divider, socials top-right, rounded brand bar footer with contacts.",
+    defaultAccent: "#3B82F6",
+    render(d, s) {
+      const a = esc(s.accent);
+      const cell = (txt: string) =>
+        `<td style="padding:9px 16px;font-size:${s.fontSize - 1}px;color:#ffffff;font-weight:600;white-space:nowrap;border-left:1px solid rgba(255,255,255,.35);">${txt}</td>`;
+      return wrap(`
+<tr><td style="border:1px solid #e8e8e8;border-radius:14px;padding:18px 22px 0 22px;">
+  <table cellpadding="0" cellspacing="0" border="0" role="presentation" width="100%">
+    <tr><td colspan="3" align="right" style="padding-bottom:6px;">${socialPills(d, s, "#ffffff", a)}</td></tr>
+    <tr>
+      ${logoImg(d, s, 96) ? `<td valign="middle" align="center" style="padding-right:22px;">${logoImg(d, s, 96)}<div style="padding-top:4px;font-size:${s.fontSize}px;font-weight:800;color:${TEXT};letter-spacing:.5px;">${esc(d.company).toLowerCase()}</div></td><td width="1" bgcolor="#e2e2e2" style="width:1px;font-size:0;">&nbsp;</td>` : ""}
+      <td valign="middle" style="padding-left:22px;">
+        <div style="font-size:${s.fontSize + 8}px;font-weight:800;color:${TEXT};letter-spacing:.3px;">${esc(d.firstName)} <span style="text-transform:uppercase;">${esc(d.lastName)}</span></div>
+        <div style="font-size:${s.fontSize + 1}px;color:${MUTED};padding-top:2px;">${esc(d.jobTitle)}</div>
+      </td>
+    </tr>
+    <tr><td colspan="3" align="right" style="padding:14px 0 0 0;">
+      <table cellpadding="0" cellspacing="0" border="0" role="presentation"><tr>
+        <td bgcolor="${a}" style="background:${a};border-radius:10px 10px 0 0;">
+          <table cellpadding="0" cellspacing="0" border="0" role="presentation"><tr>
+            ${d.address ? cell(`⌖ ${esc(d.address)}`).replace('border-left:1px solid rgba(255,255,255,.35);', '') : ""}
+            ${d.phone ? cell(`<a href="tel:${esc(d.phone)}" style="color:#ffffff;text-decoration:none;">✆ ${esc(d.phone)}</a>`) : ""}
+            ${d.website ? cell(`<a href="https://${esc(d.website.replace(/^https?:\/\//, ""))}" style="color:#ffffff;text-decoration:none;">${esc(d.website)}</a>`) : ""}
+          </tr></table>
+        </td>
+      </tr></table>
+    </td></tr>
+  </table>
+</td></tr>
+${bannerRow(d, s)}
+${legalRow(d, s)}`, s);
+    },
+  },
+  {
+    id: "contact-panel",
+    name: "Contact Panel",
+    category: "Modern",
+    description: "Photo and name left, icon-bulleted contact panel right, dark social pill beneath.",
+    defaultAccent: "#F43F5E",
+    render(d, s) {
+      const a = esc(s.accent);
+      const DARK = "#312E4F";
+      const item = (label: string, glyph: string, value: string, href?: string) => `
+<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="margin-bottom:8px;"><tr>
+  <td width="24" height="24" align="center" valign="middle" bgcolor="${a}" style="width:24px;height:24px;background:${a};border-radius:12px;color:#ffffff;font-size:11px;font-weight:800;">${glyph}</td>
+  <td style="padding-left:9px;">
+    <div style="font-size:${s.fontSize - 2}px;font-weight:800;color:${TEXT};">${label}</div>
+    <div style="font-size:${s.fontSize - 2}px;color:${MUTED};">${href ? `<a href="${href}" style="color:${MUTED};text-decoration:none;">${value}</a>` : value}</div>
+  </td>
+</tr></table>`;
+      return wrap(`
+<tr>
+  <td valign="middle" style="padding-right:26px;">
+    ${photoImg(d, s, 92, a)}
+    <div style="padding-top:10px;font-size:${s.fontSize + 6}px;font-weight:400;color:${TEXT};line-height:1.15;">${esc(d.firstName)}<br/><span style="font-weight:800;color:${esc("#312E4F")};">${esc(d.lastName)}</span></div>
+    <div style="font-size:${s.fontSize - 1}px;color:${a};font-style:italic;padding-top:2px;">${esc(d.jobTitle)}</div>
+  </td>
+  <td width="1" bgcolor="#e5e7eb" style="width:1px;font-size:0;">&nbsp;</td>
+  <td valign="middle" style="padding-left:26px;">
+    <table cellpadding="0" cellspacing="0" border="0" role="presentation"><tr>
+      <td valign="top" style="padding-right:22px;">
+        ${d.address ? item("Address:", "⌖", esc(d.address)) : ""}
+        ${d.email ? item("Email:", "✉", esc(d.email), `mailto:${esc(d.email)}`) : ""}
+      </td>
+      <td valign="top">
+        ${d.phone ? item("Phone No:", "✆", esc(d.phone), `tel:${esc(d.phone)}`) : ""}
+        ${d.website ? item("Web Folio:", "W", esc(d.website), `https://${esc(d.website.replace(/^https?:\/\//, ""))}`) : ""}
+      </td>
+    </tr></table>
+    ${s.showSocials && Object.values(d.socials).some(Boolean) ? `
+    <table cellpadding="0" cellspacing="0" border="0" role="presentation"><tr>
+      <td bgcolor="${DARK}" style="background:${DARK};border-radius:999px;padding:7px 16px;">
+        <span style="color:#ffffff;font-size:${s.fontSize - 2}px;font-weight:700;">More Follow Us On Social&nbsp;&nbsp;</span>${socialPills(d, s, DARK, "#ffffff").replace('<div style="margin-top:8px;">', '<span>').replace("</div>", "</span>")}
+      </td>
+    </tr></table>` : ""}
+  </td>
+</tr>
+${bannerRow(d, s, 3)}
+${legalRow(d, s, 3)}`, s);
+    },
+  },
+  {
+    id: "labeled-classic",
+    name: "Labeled Classic",
+    category: "Corporate",
+    description: "Ringed portrait, bold accent name over an underline, labeled contact rows, logo top-right.",
+    defaultAccent: "#E11D48",
+    render(d, s) {
+      const a = esc(s.accent);
+      const row = (label: string, value: string, href?: string) =>
+        `<div style="font-size:${s.fontSize - 1}px;line-height:1.8;color:${TEXT};"><span style="font-weight:800;">${label}</span> ${href ? `<a href="${href}" style="color:${TEXT};text-decoration:none;">${value}</a>` : value}</div>`;
+      return wrap(`
+<tr>
+  ${photoImg(d, s, 96, a) ? `<td valign="middle" style="padding-right:22px;">${photoImg(d, s, 96, a)}</td>` : ""}
+  <td valign="top">
+    <div style="font-size:${s.fontSize + 8}px;font-weight:800;color:${a};letter-spacing:.5px;text-transform:uppercase;">${fullName(d)}</div>
+    <table cellpadding="0" cellspacing="0" border="0" role="presentation" width="100%"><tr>
+      <td style="border-bottom:2px solid ${a};padding:1px 0 6px 0;font-size:${s.fontSize - 1}px;letter-spacing:2px;text-transform:uppercase;color:${TEXT};font-weight:700;">${esc(d.jobTitle)}</td>
+    </tr></table>
+    <div style="padding-top:8px;">
+      ${d.phone ? row("Phone:", esc(d.phone), `tel:${esc(d.phone)}`) : ""}
+      ${d.email ? row("Email:", esc(d.email), `mailto:${esc(d.email)}`) : ""}
+      ${d.website ? row("Website:", esc(d.website), `https://${esc(d.website.replace(/^https?:\/\//, ""))}`) : ""}
+      ${d.address ? row("Address:", esc(d.address)) : ""}
+    </div>
+    ${socialPills(d, s, "#ffffff", a)}
+  </td>
+  ${logoImg(d, s) ? `<td valign="top" align="right" style="padding-left:20px;">${logoImg(d, s, 76)}</td>` : ""}
+</tr>
+${bannerRow(d, s, 3)}
+${legalRow(d, s, 3)}`, s);
+    },
+  },
+  {
+    id: "agency-split",
+    name: "Agency Split",
+    category: "Minimal",
+    description: "Logo mark left, two-tone name, labeled p/e/w column right — clean studio letterhead.",
+    defaultAccent: "#2563EB",
+    render(d, s) {
+      const a = esc(s.accent);
+      const line = (k: string, v: string, href?: string) =>
+        `<div style="font-size:${s.fontSize - 1}px;line-height:1.8;color:${TEXT};"><span style="color:${MUTED};">${k} :</span> ${href ? `<a href="${href}" style="color:${TEXT};text-decoration:none;">${v}</a>` : v}</div>`;
+      return wrap(`
+<tr>
+  ${logoImg(d, s, 100) ? `<td valign="middle" align="center" style="padding-right:24px;">${logoImg(d, s, 100)}<div style="padding-top:4px;font-size:${s.fontSize - 1}px;font-weight:800;color:${TEXT};">${esc(d.company)}</div></td>` : ""}
+  <td valign="middle" style="padding-right:24px;">
+    <div style="font-size:${s.fontSize + 8}px;font-weight:700;color:${a};">${esc(d.firstName)} ${esc(d.lastName)}</div>
+    <div style="font-size:${s.fontSize - 1}px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:${TEXT};padding-top:2px;">${esc(d.jobTitle)}</div>
+    ${socialPills(d, s, "#ffffff", a)}
+  </td>
+  <td valign="middle" style="border-left:1px solid #e5e7eb;padding-left:24px;">
+    ${d.address ? `<div style="font-size:${s.fontSize - 2}px;font-weight:800;color:${TEXT};">address</div><div style="font-size:${s.fontSize - 1}px;color:${MUTED};line-height:1.55;padding-bottom:8px;">${esc(d.address).replace(/,\s*/g, "<br/>")}</div>` : ""}
+    ${d.phone ? line("p", esc(d.phone), `tel:${esc(d.phone)}`) : ""}
+    ${d.email ? line("e", esc(d.email), `mailto:${esc(d.email)}`) : ""}
+    ${d.website ? line("w", esc(d.website), `https://${esc(d.website.replace(/^https?:\/\//, ""))}`) : ""}
+  </td>
+</tr>
+<tr><td colspan="3" style="padding-top:12px;"><table cellpadding="0" cellspacing="0" border="0" role="presentation" width="100%"><tr><td height="4" bgcolor="${a}" style="height:4px;background:${a};font-size:0;line-height:0;border-radius:2px;">&nbsp;</td></tr></table></td></tr>
+${bannerRow(d, s, 3)}
+${legalRow(d, s, 3)}`, s);
+    },
+  },
+  {
+    id: "badge-pill",
+    name: "Badge & Pill",
+    category: "Creative",
+    description: "Icon-bulleted contacts left, oversized stacked name, bold role pill — punchy and playful.",
+    defaultAccent: "#EAB308",
+    render(d, s) {
+      const a = esc(s.accent);
+      const item = (glyph: string, value: string, href?: string) => `
+<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="margin-bottom:6px;"><tr>
+  <td width="20" height="20" align="center" valign="middle" bgcolor="#111111" style="width:20px;height:20px;background:#111111;border-radius:10px;color:#ffffff;font-size:10px;font-weight:800;">${glyph}</td>
+  <td style="padding-left:8px;font-size:${s.fontSize - 1}px;color:${TEXT};">${href ? `<a href="${href}" style="color:${TEXT};text-decoration:none;">${value}</a>` : value}</td>
+</tr></table>`;
+      return wrap(`
+<tr>
+  <td valign="middle" style="padding-right:26px;">
+    ${d.phone ? item("✆", esc(d.phone), `tel:${esc(d.phone)}`) : ""}
+    ${d.email ? item("✉", esc(d.email), `mailto:${esc(d.email)}`) : ""}
+    ${d.website ? item("W", esc(d.website), `https://${esc(d.website.replace(/^https?:\/\//, ""))}`) : ""}
+    ${d.address ? item("⌖", esc(d.address)) : ""}
+  </td>
+  <td width="4" bgcolor="${a}" style="width:4px;background:${a};border-radius:2px;font-size:0;">&nbsp;</td>
+  <td valign="middle" style="padding-left:26px;">
+    ${socialPills(d, s, TEXT).replace('margin-top:8px;', 'margin-bottom:6px;')}
+    <div style="font-size:${s.fontSize + 12}px;font-weight:800;color:${TEXT};line-height:1.05;text-transform:uppercase;letter-spacing:.5px;">${esc(d.firstName)}<br/>${esc(d.lastName)}</div>
+    <table cellpadding="0" cellspacing="0" border="0" role="presentation" style="margin-top:10px;"><tr>
+      <td bgcolor="${a}" style="background:${a};border-radius:999px;padding:6px 16px;font-size:${s.fontSize - 1}px;font-weight:800;color:#111111;">${esc(d.jobTitle)}</td>
+    </tr></table>
+  </td>
+  ${logoImg(d, s) ? `<td valign="top" align="right" style="padding-left:22px;">${logoImg(d, s, 68)}</td>` : ""}
+</tr>
+${bannerRow(d, s, 4)}
+${legalRow(d, s, 4)}`, s);
+    },
+  },
+  {
+    id: "panel-pop",
+    name: "Panel Pop",
+    category: "Creative",
+    description: "Solid color side panel with reversed name and icon rows, ringed portrait beside — bold brand energy.",
+    defaultAccent: "#5B21B6",
+    render(d, s) {
+      const a = esc(s.accent);
+      const row = (glyph: string, value: string, href?: string) => `
+<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="margin-bottom:6px;"><tr>
+  <td width="20" height="20" align="center" valign="middle" bgcolor="#ffffff" style="width:20px;height:20px;background:#ffffff;border-radius:10px;color:${a};font-size:10px;font-weight:800;">${glyph}</td>
+  <td style="padding-left:8px;font-size:${s.fontSize - 1}px;color:#ffffff;">${href ? `<a href="${href}" style="color:#ffffff;text-decoration:none;">${value}</a>` : value}</td>
+</tr></table>`;
+      return wrap(`
+<tr>
+  <td valign="middle" bgcolor="${a}" style="background:${a};border-radius:14px;padding:20px 22px;">
+    <div style="font-size:${s.fontSize + 7}px;font-weight:800;color:#ffffff;line-height:1.15;">${fullName(d)}</div>
+    <div style="font-size:${s.fontSize}px;color:#ffffff;opacity:.85;padding:2px 0 12px 0;">${esc(d.jobTitle)}</div>
+    ${d.phone ? row("✆", esc(d.phone), `tel:${esc(d.phone)}`) : ""}
+    ${d.email ? row("✉", esc(d.email), `mailto:${esc(d.email)}`) : ""}
+    ${d.address ? row("⌖", esc(d.address)) : ""}
+    ${d.website ? `<div style="border-top:1px solid rgba(255,255,255,.35);margin-top:10px;padding-top:8px;font-size:${s.fontSize - 1}px;"><a href="https://${esc(d.website.replace(/^https?:\/\//, ""))}" style="color:#ffffff;text-decoration:none;">${esc(d.website)}</a></div>` : ""}
+  </td>
+  <td width="20" style="width:20px;font-size:0;">&nbsp;</td>
+  <td valign="middle" align="center">
+    ${photoImg(d, s, 108, a)}
+    ${socialPills(d, s, "#ffffff", a)}
+  </td>
+  ${logoImg(d, s) ? `<td valign="top" align="right" style="padding-left:22px;">${logoImg(d, s, 76)}</td>` : ""}
+</tr>
+${bannerRow(d, s, 4)}
+${legalRow(d, s, 4)}`, s);
+    },
+  },
 ];
 
 /* ---------- engine ---------- */

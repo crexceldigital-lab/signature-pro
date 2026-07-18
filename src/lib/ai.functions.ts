@@ -16,6 +16,7 @@ const TEMPLATE_IDS = [
   "minimal-line", "sales-cta", "photo-card", "banner-hero", "right-rail",
   "underline-executive", "duotone", "legal-standard", "gradient-edge",
   "mono-chip", "grid-mark", "pulse-motion", "noir-motion", "noir-type",
+  "brand-footer", "contact-panel", "labeled-classic", "agency-split", "badge-pill", "panel-pop",
 ] as const;
 
 const DesignInput = z.object({
@@ -52,7 +53,7 @@ export type AiVariant = z.infer<typeof Variant>;
 
 const SYSTEM = `You are SignatureFlow's art director. Given a design brief, choose signature designs from this template catalog:
 
-accent-bar (corporate, vertical brand bar) · header-band (bold reversed color band) · corner-frame (luxury editorial frame, serif) · split-vertical (classic logo + divider) · stacked-center (centered minimal) · minimal-line (two plain lines) · sales-cta (CTA-forward with underline) · photo-card (creative tinted card, ringed portrait) · banner-hero (compact identity + campaign banner) · right-rail (tech, tinted side rail) · underline-executive (heavy accent rule under name) · duotone (solid color identity block) · legal-standard (restrained serif + disclaimer) · gradient-edge (angled brand edge, premium) · mono-chip (contacts as rounded chips, modern) · grid-mark (Swiss editorial grid, oversized initial) · pulse-motion (animated accent bar, energetic) · noir-motion (dark studio card, cream name, pulsing arrow — agencies/media) · noir-type (dark monospace card, blinking cursor — developers/tech)
+accent-bar (corporate, vertical brand bar) · header-band (bold reversed color band) · corner-frame (luxury editorial frame, serif) · split-vertical (classic logo + divider) · stacked-center (centered minimal) · minimal-line (two plain lines) · sales-cta (CTA-forward with underline) · photo-card (creative tinted card, ringed portrait) · banner-hero (compact identity + campaign banner) · right-rail (tech, tinted side rail) · underline-executive (heavy accent rule under name) · duotone (solid color identity block) · legal-standard (restrained serif + disclaimer) · gradient-edge (angled brand edge, premium) · mono-chip (contacts as rounded chips, modern) · grid-mark (Swiss editorial grid, oversized initial) · pulse-motion (animated accent bar, energetic) · noir-motion (dark studio card, cream name, pulsing arrow — agencies/media) · noir-type (dark monospace card, blinking cursor — developers/tech) · brand-footer (white card, rounded brand bar footer) · contact-panel (icon-bulleted contact grid + social pill) · labeled-classic (ringed portrait, labeled contact rows) · agency-split (studio letterhead, two-tone name) · badge-pill (oversized stacked name, bold role pill) · panel-pop (solid side panel, reversed text)
 
 Return STRICT JSON only, no markdown, matching:
 {"variants":[{"templateId":"...","accent":"#RRGGBB","fontSize":13,"font":"Arial, Helvetica, sans-serif","photoShape":"round","showPhoto":true,"showLogo":true,"showSocials":true,"showCTA":false,"showLegal":false,"ctaText":"optional","rationale":"one sentence on why this fits the brief"}]}

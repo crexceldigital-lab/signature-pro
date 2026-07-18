@@ -29,6 +29,7 @@ import { Route as AppBuilderRouteImport } from './routes/app.builder'
 import { Route as AppBannersRouteImport } from './routes/app.banners'
 import { Route as AppAnalyticsRouteImport } from './routes/app.analytics'
 import { Route as AppAiDesignerRouteImport } from './routes/app.ai-designer'
+import { Route as AppAgentsRouteImport } from './routes/app.agents'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
@@ -135,6 +136,11 @@ const AppAiDesignerRoute = AppAiDesignerRouteImport.update({
   path: '/ai-designer',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAgentsRoute = AppAgentsRouteImport.update({
+  id: '/agents',
+  path: '/agents',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppAdminRoute = AppAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -173,6 +179,7 @@ export interface FileRoutesByFullPath {
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/agents': typeof AppAgentsRoute
   '/app/ai-designer': typeof AppAiDesignerRoute
   '/app/analytics': typeof AppAnalyticsRoute
   '/app/banners': typeof AppBannersRoute
@@ -199,6 +206,7 @@ export interface FileRoutesByTo {
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/agents': typeof AppAgentsRoute
   '/app/ai-designer': typeof AppAiDesignerRoute
   '/app/analytics': typeof AppAnalyticsRoute
   '/app/banners': typeof AppBannersRoute
@@ -227,6 +235,7 @@ export interface FileRoutesById {
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/app/admin': typeof AppAdminRoute
+  '/app/agents': typeof AppAgentsRoute
   '/app/ai-designer': typeof AppAiDesignerRoute
   '/app/analytics': typeof AppAnalyticsRoute
   '/app/banners': typeof AppBannersRoute
@@ -256,6 +265,7 @@ export interface FileRouteTypes {
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/app/admin'
+    | '/app/agents'
     | '/app/ai-designer'
     | '/app/analytics'
     | '/app/banners'
@@ -282,6 +292,7 @@ export interface FileRouteTypes {
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/app/admin'
+    | '/app/agents'
     | '/app/ai-designer'
     | '/app/analytics'
     | '/app/banners'
@@ -309,6 +320,7 @@ export interface FileRouteTypes {
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/app/admin'
+    | '/app/agents'
     | '/app/ai-designer'
     | '/app/analytics'
     | '/app/banners'
@@ -483,6 +495,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAiDesignerRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/agents': {
+      id: '/app/agents'
+      path: '/agents'
+      fullPath: '/app/agents'
+      preLoaderRoute: typeof AppAgentsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/admin': {
       id: '/app/admin'
       path: '/admin'
@@ -523,6 +542,7 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteChildren {
   AppAdminRoute: typeof AppAdminRoute
+  AppAgentsRoute: typeof AppAgentsRoute
   AppAiDesignerRoute: typeof AppAiDesignerRoute
   AppAnalyticsRoute: typeof AppAnalyticsRoute
   AppBannersRoute: typeof AppBannersRoute
@@ -541,6 +561,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppAdminRoute: AppAdminRoute,
+  AppAgentsRoute: AppAgentsRoute,
   AppAiDesignerRoute: AppAiDesignerRoute,
   AppAnalyticsRoute: AppAnalyticsRoute,
   AppBannersRoute: AppBannersRoute,

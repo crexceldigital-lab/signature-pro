@@ -15,6 +15,7 @@ import {
   Sparkles,
   Plug,
   Wand2,
+  Bot,
 } from "lucide-react";
 import {
   Sidebar,
@@ -38,6 +39,7 @@ const workspace = [
   { title: "Employees", url: "/app/employees", icon: Users },
   { title: "Organization", url: "/app/organization", icon: Building2 },
   { title: "Integrations", url: "/app/integrations", icon: Plug },
+  { title: "Agent Access", url: "/app/agents", icon: Bot },
 ];
 
 const marketing = [

@@ -31,18 +31,9 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [mode, setMode] = useState<"signin" | "signup" | "forgot">("signin");
 
-  // Preserve a same-origin `?next=` redirect (e.g. OAuth consent URL) through
-  // password sign-in, sign-up, and social sign-in.
-  const nextPath = (() => {
-    if (typeof window === "undefined") return "/app/dashboard";
-    const raw = new URLSearchParams(window.location.search).get("next");
-    if (raw && raw.startsWith("/") && !raw.startsWith("//")) return raw;
-    return "/app/dashboard";
-  })();
-
   useEffect(() => {
-    if (isAuthenticated) window.location.href = nextPath;
-  }, [isAuthenticated, nextPath]);
+    if (isAuthenticated) navigate({ to: "/app/dashboard" });
+  }, [isAuthenticated, navigate]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,7 +54,7 @@ function AuthPage() {
           email,
           password,
           options: {
-            emailRedirectTo: window.location.origin + nextPath,
+            emailRedirectTo: window.location.origin,
             data: { full_name: name, org_name: orgName || undefined },
           },
         });
@@ -74,7 +65,7 @@ function AuthPage() {
         if (error) throw error;
         toast.success("Signed in");
       }
-      window.location.href = nextPath;
+      navigate({ to: "/app/dashboard" });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Authentication failed");
     } finally {
@@ -86,11 +77,11 @@ function AuthPage() {
     setBusy(true);
     try {
       const result = await lovable.auth.signInWithOAuth(provider, {
-        redirect_uri: window.location.origin + nextPath,
+        redirect_uri: window.location.origin,
       });
       if (result.error) throw result.error;
       if (result.redirected) return;
-      window.location.href = nextPath;
+      navigate({ to: "/app/dashboard" });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : `${provider} sign-in failed`);
     } finally {
